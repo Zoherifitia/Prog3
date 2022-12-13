@@ -1,8 +1,12 @@
 package app.prog.service;
 
+import app.prog.controller.mapper.BookRestMapper;
+import app.prog.controller.response.BookResponse;
 import app.prog.model.BookEntity;
 import app.prog.repository.BookRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,6 +16,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class BookService {
     private final BookRepository repository;
+    private final BookRestMapper mapper;
 
     public List<BookEntity> getBooks() {
         return repository.findAll();
@@ -26,7 +31,7 @@ public class BookService {
     }
 
     //TODO-3: should I use Integer here or int ? Why ?
-    public BookEntity deleteBook(int BookEntityId) {
+    public ResponseEntity<BookResponse> deleteBook(int BookEntityId) {
         /*
         TIPS: From the API, the Class Optional<T> is :
         A container object which may or may not contain a non-null value.
@@ -38,17 +43,21 @@ public class BookService {
         Optional<BookEntity> optional = repository.findById(String.valueOf(BookEntityId));
         if (optional.isPresent()) {
             repository.delete(optional.get());
-            return optional.get();
+            return ResponseEntity
+                    .status(200)
+                    .body(mapper.toRest(optional.get()));
         } else {
         /*
-        TODO-5 : The exception appears as an internal server error, status 500.
+
         We all know that the appropriate error status is the 404 Not Found.
         Any solution to do this ?
         These links may help you :
         Link 1 : https://www.baeldung.com/spring-response-entity
         Link 2 : https://www.baeldung.com/exception-handling-for-rest-with-spring
          */
-            throw new RuntimeException("BookEntity." + BookEntityId + " not found");
+            return ResponseEntity.status(404)
+                    .header("Book."+ BookEntityId + "not found")
+                    .body(null);
         }
     }
 }

@@ -7,6 +7,7 @@ import app.prog.controller.response.CreateBookResponse;
 import app.prog.model.Author;
 import app.prog.service.AuthorService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,8 +46,8 @@ public class AuthorController {
     }
 
     @DeleteMapping("/books/{id}")
-    public AuthorResponse deleteAuthor(@PathVariable Integer id){
-        return authorMapper.toRest(authorService.deleteAuthor(id));
+    public ResponseEntity<AuthorResponse> deleteAuthor(@PathVariable Integer id){
+        return authorService.deleteAuthor(id);
     }
 
 }
