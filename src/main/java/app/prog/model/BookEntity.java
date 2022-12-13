@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "book")
@@ -19,9 +20,14 @@ public class BookEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String title;
-    private String author;
+    @ManyToOne
+    @JoinColumn(name = "relation")
+    private Author author;
     private Integer pageNumber;
     private LocalDate releaseDate;
+
+    @ManyToMany//(fetch = FetchType.LAZY)
+    private List<Category> category;
 
     public boolean hasAuthor() {
         return author != null;

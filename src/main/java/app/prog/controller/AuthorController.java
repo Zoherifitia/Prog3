@@ -34,7 +34,7 @@ public class AuthorController {
                 .toList();
     }
 
-    @PutMapping("/books")
+    @PutMapping("/authors")
     public List<AuthorResponse> updateAuthors(@RequestBody List<CreateAuthorResponse> toUpdate){
         List<Author> domain =toUpdate.stream()
                 .map(authorMapper::toDomain)
@@ -45,8 +45,8 @@ public class AuthorController {
     }
 
     @DeleteMapping("/books/{id}")
-    public AuthorResponse deleteAuthor(@PathVariable Integer authorId){
-        return authorMapper.toRest(authorService.deleteAuthor(authorId));
+    public AuthorResponse deleteAuthor(@PathVariable Integer id){
+        return authorMapper.toRest(authorService.deleteAuthor(id));
     }
 
 }

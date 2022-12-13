@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import java.time.Instant;
 
 @AllArgsConstructor
-@NoArgsConstructor
 @Data
 @Builder
 public class CreateAuthorResponse {
